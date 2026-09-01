@@ -1,8 +1,7 @@
 # Steve_Portfolio
 Portafolio profesional interactivo con diseño Bento Grid, optimizado para alto rendimiento, responsive design y modo oscuro nativo.
 
-🔗 **Sitio en vivo:** [steve-p-dev.github.io/Steve_Portfolio](https://steve-p-dev.github.io/Portfolio-2.0/)
-
+🔗 **Sitio en vivo:** [steve-p-dev.github.io/Steve_Portfolio](https://steve-p-dev.github.io/Steve_Portfolio/)
 ---
 
 ### 🛠️ Stack Tecnológico
