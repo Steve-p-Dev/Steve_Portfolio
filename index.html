@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Steven Venegas — Systems Engineer | IT Operations, Automation & Enterprise Systems. Portfolio profesional." />
+  <meta name="author" content="Steven Patricio Venegas Rengifo" />
+  <title>Steven Venegas · SV.dev_</title>
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Typography: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <script>
+    // Tailwind custom config
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            base: '#090a0f',
+            card: '#12141c',
+            emerald: { DEFAULT: '#10b981', dark: '#059669' },
+            cyan:    { DEFAULT: '#06b6d4', dark: '#0891b2' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float':      'float 6s ease-in-out infinite',
+            'glow':       'glow 2s ease-in-out infinite alternate',
+            'fade-up':    'fadeUp 0.6s ease-out forwards',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%':      { transform: 'translateY(-8px)' },
+            },
+            glow: {
+              from: { boxShadow: '0 0 10px #10b98144, 0 0 20px #10b98122' },
+              to:   { boxShadow: '0 0 20px #10b98166, 0 0 40px #10b98133' },
+            },
+            fadeUp: {
+              from: { opacity: '0', transform: 'translateY(24px)' },
+              to:   { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
+          backdropBlur: { md: '12px' },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ─── Global Reset & Base ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-family: 'Inter', system-ui, sans-serif; }
+    body {
+      background-color: #090a0f;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    /* ─── Scrollbar ───────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #090a0f; }
+    ::-webkit-scrollbar-thumb { background: #10b98155; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+
+    /* ─── Selection ───────────────────────────────────────── */
+    ::selection { background: #10b98133; color: #10b981; }
+
+    /* ─── Glassmorphism card ──────────────────────────────── */
+    .glass-card {
+      background: rgba(18, 20, 28, 0.80);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .glass-card:hover {
+      border-color: rgba(16, 185, 129, 0.30);
+      box-shadow: 0 0 32px rgba(16, 185, 129, 0.08);
+      transform: translateY(-2px);
+    }
+
+    /* ─── Gradient border on hover ───────────────────────── */
+    .grad-border {
+      position: relative;
+    }
+    .grad-border::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, #10b98100, #10b98133, #06b6d433, #10b98100);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+    .grad-border:hover::before { opacity: 1; }
+
+    /* ─── Dot grid background ─────────────────────────────── */
+    .dot-grid {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ─── Cursor glow effect ──────────────────────────────── */
+    #cursor-glow {
+      pointer-events: none;
+      position: fixed;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* ─── Tech badge ─────────────────────────────────────── */
+    .tech-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(16,185,129,0.10);
+      color: #10b981;
+      border: 1px solid rgba(16,185,129,0.20);
+    }
+    .tech-badge.cyan {
+      background: rgba(6,182,212,0.10);
+      color: #06b6d4;
+      border-color: rgba(6,182,212,0.20);
+    }
+    .tech-badge.purple {
+      background: rgba(139,92,246,0.10);
+      color: #a78bfa;
+      border-color: rgba(139,92,246,0.20);
+    }
+    .tech-badge.orange {
+      background: rgba(249,115,22,0.10);
+      color: #fb923c;
+      border-color: rgba(249,115,22,0.20);
+    }
+    .tech-badge.blue {
+      background: rgba(59,130,246,0.10);
+      color: #60a5fa;
+      border-color: rgba(59,130,246,0.20);
+    }
+
+    /* ─── Pulsing availability dot ────────────────────────── */
+    .pulse-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 0 rgba(16,185,129,0.5);
+      animation: ping-dot 1.5s ease-out infinite;
+    }
+    @keyframes ping-dot {
+      0%   { box-shadow: 0 0 0 0 rgba(16,185,129,0.6); }
+      70%  { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+      100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+    }
+
+    /* ─── Timeline ───────────────────────────────────────── */
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -25px;
+      top: 8px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 12px #10b981;
+      border: 2px solid #090a0f;
+    }
+    .timeline-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, #10b981, #06b6d4, #10b98100);
+      margin-left: -21px;
+    }
+
+    /* ─── Navbar ─────────────────────────────────────────── */
+    .navbar-blur {
+      background: rgba(9, 10, 15, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ─── Fade-in on scroll ───────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── CTA Buttons ─────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #000;
+      transition: filter 0.25s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(16,185,129,0.35);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      background: rgba(255,255,255,0.06);
+      color: #e2e8f0;
+      border: 1px solid rgba(255,255,255,0.10);
+      transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(16,185,129,0.40);
+      transform: translateY(-1px);
+    }
+
+    /* ─── Toast notification ─────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.40);
+      backdrop-filter: blur(12px);
+      color: #10b981;
+      padding: 12px 24px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      z-index: 9999;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ─── Bento grid spans ───────────────────────────────── */
+    @media (min-width: 768px) {
+      .bento-wide   { grid-column: span 2; }
+      .bento-tall   { grid-row: span 2; }
+    }
+
+    /* ─── Code logo ──────────────────────────────────────── */
+    .logo-text {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #f1f5f9;
+    }
+    .logo-text span { color: #10b981; }
+
+    /* ─── Section title ──────────────────────────────────── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #10b981;
+    }
+
+    /* ─── Progress bar ───────────────────────────────────── */
+    .skill-bar-fill {
+      height: 4px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+    }
+    .skill-bar-fill.animate { transform: scaleX(1); }
+
+    /* ─── Mobile menu ────────────────────────────────────── */
+    #mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    #mobile-menu.open { max-height: 300px; }
+  </style>
+</head>
+
+<body class="min-h-screen dot-grid selection:bg-emerald-500/20">
+
+  <!-- ─── Cursor Glow ──────────────────────────────────────────── -->
+  <div id="cursor-glow"></div>
+
+  <!-- ─── Toast ────────────────────────────────────────────────── -->
+  <div id="toast" role="status" aria-live="polite">
+    <i data-lucide="check-circle" class="w-4 h-4"></i>
+    <span id="toast-msg">¡Copiado al portapapeles!</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════════════════════════ -->
+  <header class="navbar-blur fixed top-0 left-0 right-0 z-50" role="banner">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Navegación principal">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- Logo -->
+        <a href="#" class="logo-text tracking-tight" aria-label="Steven Venegas — inicio">
+          SV<span>.</span>dev<span class="opacity-60">_</span>
+        </a>
+
+        <!-- Desktop nav links -->
+        <div class="hidden md:flex items-center gap-1" role="list">
+          <a href="#proyectos"   class="nav-link px-3 py-2 text-sm font-medium text-slate-400 hover:text-slate-100 rounded-lg hover:bg-white/5 transition-all duration-200" role="listitem">Proyectos</a>
+          <a href="#stack"       class="nav-link px-3 py-2 text-sm font-medium text-slate-400 hover:text-slate-100 rounded-lg hover:bg-white/5 transition-all duration-200" role="listitem">Stack</a>
+          <a href="#experiencia" class="nav-link px-3 py-2 text-sm font-medium text-slate-400 hover:text-slate-100 rounded-lg hover:bg-white/5 transition-all duration-200" role="listitem">Experiencia</a>
+          <a href="#contacto"    class="nav-link px-3 py-2 text-sm font-medium text-slate-400 hover:text-slate-100 rounded-lg hover:bg-white/5 transition-all duration-200" role="listitem">Contacto</a>
+        </div>
+
+        <!-- CTA + mobile toggle -->
+        <div class="flex items-center gap-3">
+          <a href="cv-steven-venegas.pdf" download
+             class="hidden sm:inline-flex btn-primary text-sm"
+             aria-label="Descargar CV de Steven Venegas">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Descargar CV
+          </a>
+          <button id="menu-toggle" class="md:hidden p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                  aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+            <i data-lucide="menu" class="w-5 h-5 text-slate-300" id="menu-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" role="navigation" aria-label="Menú móvil">
+        <div class="py-3 px-2 flex flex-col gap-1 border-t border-white/5">
+          <a href="#proyectos"   class="px-3 py-2.5 text-sm text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all" onclick="closeMobileMenu()">Proyectos</a>
+          <a href="#stack"       class="px-3 py-2.5 text-sm text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all" onclick="closeMobileMenu()">Stack</a>
+          <a href="#experiencia" class="px-3 py-2.5 text-sm text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all" onclick="closeMobileMenu()">Experiencia</a>
+          <a href="#contacto"    class="px-3 py-2.5 text-sm text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all" onclick="closeMobileMenu()">Contacto</a>
+          <a href="cv-steven-venegas.pdf" download class="mt-2 btn-primary justify-center text-sm">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Descargar CV
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════════════════════════════ -->
+  <main class="relative z-10">
+
+    <!-- ─────────────────────────────────────────────────────────
+         HERO SECTION
+    ───────────────────────────────────────────────────────── -->
+    <section id="inicio" class="min-h-screen flex items-center pt-20 pb-16 px-4 sm:px-6 lg:px-8" aria-labelledby="hero-heading">
+      <div class="max-w-6xl mx-auto w-full">
+
+        <!-- Availability Badge -->
+        <div class="reveal flex justify-start mb-8">
+          <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full
+                      bg-emerald-500/10 border border-emerald-500/25
+                      text-emerald-400 text-sm font-medium
+                      hover:bg-emerald-500/15 hover:border-emerald-500/40
+                      transition-all duration-300 cursor-default">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            Disponible para nuevos proyectos e impacto técnico
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <!-- Left: Copy -->
+          <div>
+            <!-- Name -->
+            <p class="reveal section-label mb-3">Systems Engineer · Ecuador</p>
+
+            <h1 id="hero-heading" class="reveal text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.08] tracking-tight text-white mb-6"
+                style="transition-delay:0.1s">
+              Ingeniería de<br/>
+              Sistemas,<br/>
+              <span class="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                Automatización
+              </span><br/>
+              <span class="text-slate-300 text-3xl sm:text-4xl lg:text-5xl">y Gestión de Datos</span>
+            </h1>
+
+            <p class="reveal text-slate-400 text-base sm:text-lg leading-relaxed max-w-xl mb-8"
+               style="transition-delay:0.2s">
+              Especializado en optimizar operaciones de TI, administrar bases de datos relacionales,
+              resolver incidencias críticas en entornos ERP e implementar scripts de automatización robustos.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="reveal flex flex-wrap gap-3" style="transition-delay:0.3s">
+              <a href="#proyectos" class="btn-primary">
+                <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                Explorar Proyectos
+              </a>
+              <a href="https://wa.me/593999976899?text=Hola%20Steven%2C%20vi%20tu%20portfolio%20y%20me%20gustar%C3%ADa%20contactarte."
+                 target="_blank" rel="noopener noreferrer"
+                 class="btn-secondary">
+                <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
+                WhatsApp
+              </a>
+              <a href="https://github.com/Steve-p-Dev"
+                 target="_blank" rel="noopener noreferrer"
+                 class="btn-secondary" aria-label="GitHub de Steven">
+                <i data-lucide="github" class="w-4 h-4"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/stevenvenegasit"
+                 target="_blank" rel="noopener noreferrer"
+                 class="btn-secondary" aria-label="LinkedIn de Steven">
+                <i data-lucide="linkedin" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Profile Card -->
+          <div class="reveal flex justify-center lg:justify-end" style="transition-delay:0.2s">
+            <div class="glass-card grad-border p-6 max-w-sm w-full">
+              <!-- Avatar placeholder -->
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500
+                            flex items-center justify-center text-2xl font-black text-black shadow-lg
+                            shadow-emerald-500/20 flex-shrink-0">
+                  SV
+                </div>
+                <div>
+                  <h2 class="text-base font-bold text-white leading-tight">Steven Patricio Venegas</h2>
+                  <p class="text-xs text-slate-400 mt-0.5">Systems Engineer</p>
+                  <div class="flex items-center gap-1.5 mt-1.5">
+                    <span class="pulse-dot w-2 h-2"></span>
+                    <span class="text-xs text-emerald-400 font-medium">Disponible</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick stats -->
+              <div class="grid grid-cols-3 gap-3 mb-6">
+                <div class="bg-white/4 rounded-xl p-3 text-center">
+                  <div class="text-xl font-black text-white">3+</div>
+                  <div class="text-xs text-slate-400 mt-0.5">Años Exp.</div>
+                </div>
+                <div class="bg-white/4 rounded-xl p-3 text-center">
+                  <div class="text-xl font-black text-white">5+</div>
+                  <div class="text-xs text-slate-400 mt-0.5">Tecnologías</div>
+                </div>
+                <div class="bg-white/4 rounded-xl p-3 text-center">
+                  <div class="text-xl font-black text-white">3</div>
+                  <div class="text-xs text-slate-400 mt-0.5">Proyectos</div>
+                </div>
+              </div>
+
+              <!-- Info rows -->
+              <div class="space-y-2.5">
+                <div class="flex items-center gap-2.5 text-sm">
+                  <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
+                  <span class="text-slate-300">Ecuador</span>
+                </div>
+                <div class="flex items-center gap-2.5 text-sm">
+                  <i data-lucide="database" class="w-4 h-4 text-cyan-400 flex-shrink-0"></i>
+                  <span class="text-slate-300">IBM Informix · PostgreSQL · SQL Server</span>
+                </div>
+                <div class="flex items-center gap-2.5 text-sm">
+                  <i data-lucide="terminal" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
+                  <span class="text-slate-300">Python · PowerShell · PowerBuilder</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────
+         TECH STACK — BENTO GRID
+    ───────────────────────────────────────────────────────── -->
+    <section id="stack" class="py-20 px-4 sm:px-6 lg:px-8" aria-labelledby="stack-heading">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal mb-12">
+          <p class="section-label mb-2">Habilidades Técnicas</p>
+          <h2 id="stack-heading" class="text-3xl sm:text-4xl font-black text-white">
+            Tech Stack &amp; Especialidades
+          </h2>
+          <p class="text-slate-400 mt-3 max-w-xl">
+            Herramientas y tecnologías que utilizo para construir, automatizar y gestionar sistemas empresariales.
+          </p>
+        </div>
+
+        <!-- Bento grid: asymmetric 2/3 col layout -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+          <!-- Card 1: Bases de Datos — wide (col span 2) -->
+          <div class="reveal glass-card grad-border p-6 md:col-span-2">
+            <div class="flex items-start gap-4 mb-5">
+              <div class="w-11 h-11 rounded-xl bg-emerald-500/15 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="database" class="w-5 h-5 text-emerald-400"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-base">Bases de Datos &amp; SQL</h3>
+                <p class="text-slate-400 text-sm mt-0.5">Motor principal de operaciones empresariales</p>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              Diseño, optimización y mantenimiento de bases de datos relacionales en entornos ERP de alta
+              criticidad. Experiencia en procedimientos transaccionales, tuning de queries e integridad referencial.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tech-badge">IBM Informix</span>
+              <span class="tech-badge">PostgreSQL</span>
+              <span class="tech-badge">SQL Server</span>
+              <span class="tech-badge">Query Optimization</span>
+              <span class="tech-badge">Stored Procedures</span>
+              <span class="tech-badge">ACID Transactions</span>
+            </div>
+            <!-- Skill bars -->
+            <div class="mt-5 space-y-3">
+              <div>
+                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                  <span>IBM Informix</span><span class="text-emerald-400">Avanzado</span>
+                </div>
+                <div class="h-1 bg-white/8 rounded-full overflow-hidden">
+                  <div class="skill-bar-fill" style="--w:0.88" data-width="0.88"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                  <span>PostgreSQL / SQL Server</span><span class="text-emerald-400">Intermedio</span>
+                </div>
+                <div class="h-1 bg-white/8 rounded-full overflow-hidden">
+                  <div class="skill-bar-fill" data-width="0.72"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Automatización — tall (row span 2) -->
+          <div class="reveal glass-card grad-border p-6 md:row-span-2" style="transition-delay:0.1s">
+            <div class="w-11 h-11 rounded-xl bg-cyan-500/15 flex items-center justify-center mb-5">
+              <i data-lucide="terminal" class="w-5 h-5 text-cyan-400"></i>
+            </div>
+            <h3 class="font-bold text-white text-base mb-1">Automatización &amp; Scripting</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              Desarrollo de scripts para automatizar flujos operativos, reducir errores manuales y acelerar
+              el procesamiento de datos en entornos Windows/Server.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="tech-badge cyan">Python</span>
+              <span class="tech-badge cyan">PowerShell</span>
+              <span class="tech-badge cyan">Batch / WSH</span>
+              <span class="tech-badge cyan">Task Scheduler</span>
+            </div>
+            <!-- Feature list -->
+            <ul class="space-y-3 text-sm text-slate-400">
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0"></i>
+                Automatización de aprovisionamiento de cuentas AD
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0"></i>
+                Scripts de auditoría y reporte de seguridad
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0"></i>
+                Procesamiento y transformación de datos masivos
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0"></i>
+                Monitoreo y diagnóstico de conectividad de red
+              </li>
+            </ul>
+
+            <!-- Mini code snippet decoration -->
+            <div class="mt-6 bg-black/40 rounded-lg p-3 font-mono text-xs text-slate-500 border border-white/5">
+              <span class="text-purple-400">Get-ADUser</span>
+              <span class="text-slate-400"> -Filter</span>
+              <span class="text-emerald-400"> *</span><br/>
+              <span class="text-slate-400">&nbsp;&nbsp;| Export-Csv</span>
+              <span class="text-emerald-400"> audit.csv</span><br/>
+              <span class="text-cyan-400">&nbsp;&nbsp;-NoTypeInformation</span>
+            </div>
+          </div>
+
+          <!-- Card 3: ERP & Sistemas Empresariales -->
+          <div class="reveal glass-card grad-border p-6" style="transition-delay:0.1s">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-11 h-11 rounded-xl bg-purple-500/15 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="building-2" class="w-5 h-5 text-purple-400"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-base">Sistemas ERP &amp; Empresariales</h3>
+                <p class="text-slate-400 text-sm mt-0.5">Módulos administrativos e integración</p>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              Mantenimiento de flujos transaccionales en ERP sobre IBM Informix, desarrollo y reportería
+              con PowerBuilder, integración de módulos y resolución de incidencias críticas.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tech-badge purple">PowerBuilder</span>
+              <span class="tech-badge purple">ERP Integration</span>
+              <span class="tech-badge purple">Reporting</span>
+              <span class="tech-badge purple">Transactional Flows</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Infraestructura & Redes — wide -->
+          <div class="reveal glass-card grad-border p-6 md:col-span-2" style="transition-delay:0.15s">
+            <div class="flex items-start gap-4 mb-5">
+              <div class="w-11 h-11 rounded-xl bg-orange-500/15 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="network" class="w-5 h-5 text-orange-400"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-base">Infraestructura, Soporte &amp; Redes</h3>
+                <p class="text-slate-400 text-sm mt-0.5">Administración de entornos corporativos</p>
+              </div>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                  Administración de Active Directory, configuración de GPOs, despliegue masivo de estaciones
+                  de trabajo y gestión integral de incidentes de TI.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="tech-badge orange">Active Directory</span>
+                  <span class="tech-badge orange">GPO</span>
+                  <span class="tech-badge orange">Windows Server</span>
+                  <span class="tech-badge orange">Networking</span>
+                  <span class="tech-badge orange">ITSM / Help Desk</span>
+                </div>
+              </div>
+              <div class="space-y-2.5 text-sm text-slate-400">
+                <div class="flex items-center gap-2.5">
+                  <i data-lucide="shield-check" class="w-4 h-4 text-orange-400 flex-shrink-0"></i>
+                  Hardening y directivas de seguridad
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <i data-lucide="monitor" class="w-4 h-4 text-orange-400 flex-shrink-0"></i>
+                  Despliegue y configuración de workstations
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <i data-lucide="wifi" class="w-4 h-4 text-orange-400 flex-shrink-0"></i>
+                  Diagnóstico y conectividad de red
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <i data-lucide="users" class="w-4 h-4 text-orange-400 flex-shrink-0"></i>
+                  Gestión de cuentas y permisos corporativos
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5: Frontend Dev — full width bottom -->
+          <div class="reveal glass-card grad-border p-6 md:col-span-3" style="transition-delay:0.2s">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 mb-5">
+              <div class="flex items-center gap-4">
+                <div class="w-11 h-11 rounded-xl bg-blue-500/15 flex items-center justify-center flex-shrink-0">
+                  <i data-lucide="code-2" class="w-5 h-5 text-blue-400"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-white text-base">Desarrollo Frontend &amp; Herramientas</h3>
+                  <p class="text-slate-400 text-sm mt-0.5">Interfaces web modernas y control de versiones</p>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span class="tech-badge blue">HTML5</span>
+                <span class="tech-badge blue">CSS3</span>
+                <span class="tech-badge blue">JavaScript</span>
+                <span class="tech-badge blue">Tailwind CSS</span>
+                <span class="tech-badge blue">APIs REST</span>
+                <span class="tech-badge blue">Git / GitHub</span>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              Construcción de interfaces web responsivas, consumo de APIs externas y versionamiento con Git/GitHub.
+              Enfoque en rendimiento, accesibilidad y experiencia de usuario.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────
+         PROYECTOS — BENTO GRID
+    ───────────────────────────────────────────────────────── -->
+    <section id="proyectos" class="py-20 px-4 sm:px-6 lg:px-8" aria-labelledby="proyectos-heading">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal mb-12">
+          <p class="section-label mb-2">Trabajo Destacado</p>
+          <h2 id="proyectos-heading" class="text-3xl sm:text-4xl font-black text-white">
+            Proyectos Técnicos
+          </h2>
+          <p class="text-slate-400 mt-3 max-w-xl">
+            Soluciones construidas con foco en automatización, usabilidad y arquitectura de datos sólida.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+          <!-- ── Project 1: Incoterms 2020 ── (featured / wide) -->
+          <article class="reveal glass-card grad-border p-6 md:col-span-2 flex flex-col" aria-label="Proyecto Incoterms 2020 Interactive Navigator">
+            <div class="flex items-start justify-between mb-4 gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20
+                            border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                  <i data-lucide="globe" class="w-5 h-5 text-emerald-400"></i>
+                </div>
+                <div>
+                  <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Proyecto Destacado</span>
+                  <h3 class="text-base font-bold text-white leading-tight">Incoterms 2020 Interactive Navigator</h3>
+                </div>
+              </div>
+              <!-- Links -->
+              <div class="flex gap-2 flex-shrink-0">
+                <a href="https://github.com/Steve-p-Dev"
+                   target="_blank" rel="noopener noreferrer"
+                   class="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5
+                          hover:bg-white/10 border border-white/10 hover:border-white/20
+                          transition-all duration-200 text-slate-400 hover:text-white"
+                   aria-label="Ver repositorio en GitHub">
+                  <i data-lucide="github" class="w-4 h-4"></i>
+                </a>
+                <a href="https://github.com/Steve-p-Dev"
+                   target="_blank" rel="noopener noreferrer"
+                   class="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5
+                          hover:bg-white/10 border border-white/10 hover:border-white/20
+                          transition-all duration-200 text-slate-400 hover:text-white"
+                   aria-label="Ver live demo">
+                  <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+
+            <p class="text-slate-400 text-sm leading-relaxed mb-4 flex-1">
+              Guía interactiva y visual para la consulta rápida y comprensión de responsabilidades, costos y
+              riesgos en el comercio internacional. Diseñada para ser accesible tanto a equipos logísticos
+              como a usuarios sin experiencia técnica en comercio exterior.
+            </p>
+
+            <!-- Challenge / Solution pills -->
+            <div class="grid sm:grid-cols-2 gap-3 mb-5">
+              <div class="bg-white/4 rounded-lg p-3">
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Reto</p>
+                <p class="text-xs text-slate-400">Complejidad en la interpretación visual de los 11 Incoterms y sus puntos de transferencia de riesgo.</p>
+              </div>
+              <div class="bg-white/4 rounded-lg p-3">
+                <p class="text-xs font-semibold text-emerald-500 uppercase tracking-wider mb-1">Solución</p>
+                <p class="text-xs text-slate-400">Interfaz interactiva con visualizaciones dinámicas, filtros por tipo de transporte y comparativas en tiempo real.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              <span class="tech-badge">HTML5</span>
+              <span class="tech-badge">CSS3</span>
+              <span class="tech-badge">JavaScript</span>
+              <span class="tech-badge cyan">UI/UX Responsive</span>
+              <span class="tech-badge blue">Live Demo</span>
+            </div>
+          </article>
+
+          <!-- ── Project 2: Enterprise IT Automation ── -->
+          <article class="reveal glass-card grad-border p-6 flex flex-col" style="transition-delay:0.1s" aria-label="Proyecto Enterprise IT Automation Suite">
+            <div class="w-11 h-11 rounded-xl bg-orange-500/15 flex items-center justify-center mb-4">
+              <i data-lucide="shield-check" class="w-5 h-5 text-orange-400"></i>
+            </div>
+            <span class="text-xs font-semibold text-orange-400 tracking-wider uppercase mb-1">Automatización</span>
+            <h3 class="text-base font-bold text-white mb-3 leading-tight">
+              Enterprise IT Automation &amp; Administration Suite
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4 flex-1">
+              Colección de scripts automatizados para auditoría, aprovisionamiento de cuentas,
+              despliegue de directivas de seguridad y diagnóstico de conectividad en redes corporativas.
+            </p>
+
+            <div class="bg-black/40 rounded-lg p-3 font-mono text-xs text-slate-500 border border-white/5 mb-4">
+              <span class="text-emerald-400"># Audit All AD Users</span><br/>
+              <span class="text-purple-400">$users</span> = <span class="text-cyan-400">Get-ADUser</span><br/>
+              <span class="text-slate-400">  -Filter * -Properties *</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="tech-badge cyan">PowerShell</span>
+              <span class="tech-badge orange">Active Directory</span>
+              <span class="tech-badge orange">Windows Server</span>
+            </div>
+
+            <a href="https://github.com/Steve-p-Dev"
+               target="_blank" rel="noopener noreferrer"
+               class="mt-4 flex items-center gap-1.5 text-sm text-slate-400 hover:text-emerald-400
+                      transition-colors duration-200 font-medium"
+               aria-label="Ver repositorio en GitHub">
+              <i data-lucide="github" class="w-4 h-4"></i>
+              Ver repositorio
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </article>
+
+          <!-- ── Project 3: POS & Sales Management ── -->
+          <article class="reveal glass-card grad-border p-6 flex flex-col" style="transition-delay:0.15s" aria-label="Proyecto Point-of-Sale y Sales Management">
+            <div class="w-11 h-11 rounded-xl bg-purple-500/15 flex items-center justify-center mb-4">
+              <i data-lucide="shopping-cart" class="w-5 h-5 text-purple-400"></i>
+            </div>
+            <span class="text-xs font-semibold text-purple-400 tracking-wider uppercase mb-1">Arquitectura</span>
+            <h3 class="text-base font-bold text-white mb-3 leading-tight">
+              Point-of-Sale &amp; Sales Management Concept
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4 flex-1">
+              Diseño funcional y estructura de base de datos para gestión transaccional, control de turnos
+              y conciliación diaria de ventas. Enfocado en escalabilidad y consistencia de datos.
+            </p>
+
+            <div class="grid grid-cols-3 gap-2 mb-4">
+              <div class="bg-white/4 rounded-lg p-2.5 text-center">
+                <i data-lucide="layers" class="w-4 h-4 text-purple-400 mx-auto mb-1"></i>
+                <p class="text-xs text-slate-400">Arquitectura</p>
+              </div>
+              <div class="bg-white/4 rounded-lg p-2.5 text-center">
+                <i data-lucide="database" class="w-4 h-4 text-purple-400 mx-auto mb-1"></i>
+                <p class="text-xs text-slate-400">Esquema SQL</p>
+              </div>
+              <div class="bg-white/4 rounded-lg p-2.5 text-center">
+                <i data-lucide="bar-chart-2" class="w-4 h-4 text-purple-400 mx-auto mb-1"></i>
+                <p class="text-xs text-slate-400">Reportería</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="tech-badge purple">SQL</span>
+              <span class="tech-badge purple">Software Design</span>
+              <span class="tech-badge purple">Prototyping</span>
+            </div>
+
+            <a href="https://github.com/Steve-p-Dev"
+               target="_blank" rel="noopener noreferrer"
+               class="mt-4 flex items-center gap-1.5 text-sm text-slate-400 hover:text-purple-400
+                      transition-colors duration-200 font-medium"
+               aria-label="Ver repositorio en GitHub">
+              <i data-lucide="github" class="w-4 h-4"></i>
+              Ver repositorio
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </article>
+
+          <!-- ── CTA card to GitHub ── -->
+          <article class="reveal glass-card p-6 flex flex-col items-center justify-center text-center
+                          border border-dashed border-white/10 hover:border-emerald-500/30
+                          transition-all duration-300 cursor-pointer group"
+                   style="transition-delay:0.2s"
+                   onclick="window.open('https://github.com/Steve-p-Dev', '_blank')"
+                   role="link"
+                   aria-label="Ver todos los proyectos en GitHub">
+            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3
+                        group-hover:bg-emerald-500/15 transition-colors duration-300">
+              <i data-lucide="plus" class="w-5 h-5 text-slate-400 group-hover:text-emerald-400 transition-colors"></i>
+            </div>
+            <p class="text-sm font-semibold text-slate-400 group-hover:text-white transition-colors">
+              Ver más en GitHub
+            </p>
+            <p class="text-xs text-slate-600 mt-1 group-hover:text-slate-400 transition-colors">
+              @Steve-p-Dev
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────
+         EXPERIENCIA — TIMELINE
+    ───────────────────────────────────────────────────────── -->
+    <section id="experiencia" class="py-20 px-4 sm:px-6 lg:px-8" aria-labelledby="exp-heading">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal mb-12">
+          <p class="section-label mb-2">Trayectoria Profesional</p>
+          <h2 id="exp-heading" class="text-3xl sm:text-4xl font-black text-white">
+            Experiencia Laboral
+          </h2>
+          <p class="text-slate-400 mt-3 max-w-xl">
+            Historial de roles con impacto real en infraestructura, operaciones de TI y sistemas empresariales.
+          </p>
+        </div>
+
+        <!-- Timeline wrapper -->
+        <div class="relative pl-8">
+          <!-- Vertical line -->
+          <div class="timeline-line" aria-hidden="true"></div>
+
+          <!-- ── Job 1: Provefrut ── -->
+          <article class="reveal timeline-item relative mb-10 glass-card grad-border p-6" aria-label="Experiencia en Provefrut S.A.">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+              <div>
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                  <h3 class="text-base font-bold text-white">Asistente de TI</h3>
+                  <span class="tech-badge">Actual</span>
+                </div>
+                <p class="text-emerald-400 font-semibold text-sm">Provefrut S.A.</p>
+              </div>
+              <div class="flex items-center gap-2 text-slate-500 text-sm flex-shrink-0">
+                <i data-lucide="calendar" class="w-4 h-4 text-slate-600" aria-hidden="true"></i>
+                <time datetime="2026">2026 – Presente</time>
+              </div>
+            </div>
+            <ul class="space-y-2.5 text-sm text-slate-400">
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" aria-hidden="true"></i>
+                Mantenimiento y optimización de flujos transaccionales en sistema ERP sobre bases de datos IBM Informix y PowerBuilder.
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" aria-hidden="true"></i>
+                Automatización de procesos operativos y soporte a infraestructura tecnológica empresarial.
+              </li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="tech-badge">IBM Informix</span>
+              <span class="tech-badge">PowerBuilder</span>
+              <span class="tech-badge">ERP</span>
+              <span class="tech-badge cyan">PowerShell</span>
+            </div>
+          </article>
+
+          <!-- ── Job 2: CNE ── -->
+          <article class="reveal timeline-item relative mb-10 glass-card grad-border p-6" style="transition-delay:0.1s" aria-label="Experiencia en CNE Ecuador">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+              <div>
+                <h3 class="text-base font-bold text-white mb-1">Soporte Técnico &amp; Operaciones de TI</h3>
+                <p class="text-cyan-400 font-semibold text-sm">Consejo Nacional Electoral (CNE)</p>
+              </div>
+              <div class="flex flex-col items-start sm:items-end gap-1 text-slate-500 text-xs flex-shrink-0">
+                <div class="flex items-center gap-1.5">
+                  <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-600" aria-hidden="true"></i>
+                  <time datetime="2025-10">Oct 2025</time> – <time datetime="2026-01">Ene 2026</time>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-600" aria-hidden="true"></i>
+                  <time datetime="2024-10">Oct 2024</time> – <time datetime="2025-05">May 2025</time>
+                </div>
+              </div>
+            </div>
+            <ul class="space-y-2.5 text-sm text-slate-400">
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="chevron-right" class="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" aria-hidden="true"></i>
+                Soporte técnico especializado a infraestructura de cómputo y conectividad de red.
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="chevron-right" class="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" aria-hidden="true"></i>
+                Aseguramiento de operatividad en procesos electorales clave de Ecuador.
+              </li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="tech-badge orange">Infraestructura</span>
+              <span class="tech-badge orange">Redes</span>
+              <span class="tech-badge orange">Hardware</span>
+              <span class="tech-badge cyan">Help Desk</span>
+            </div>
+          </article>
+
+          <!-- ── Job 3: RengiTech ── -->
+          <article class="reveal timeline-item relative glass-card grad-border p-6" style="transition-delay:0.2s" aria-label="Experiencia en RengiTech">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+              <div>
+                <h3 class="text-base font-bold text-white mb-1">Técnico de Soporte &amp; Sistemas</h3>
+                <p class="text-purple-400 font-semibold text-sm">RengiTech</p>
+              </div>
+              <div class="flex items-center gap-2 text-slate-500 text-sm flex-shrink-0">
+                <i data-lucide="calendar" class="w-4 h-4 text-slate-600" aria-hidden="true"></i>
+                <time datetime="2023-02">Feb 2023</time> – <time datetime="2024-02">Feb 2024</time>
+              </div>
+            </div>
+            <ul class="space-y-2.5 text-sm text-slate-400">
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="chevron-right" class="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" aria-hidden="true"></i>
+                Mantenimiento preventivo y correctivo de hardware, configuración de software corporativo.
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="chevron-right" class="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" aria-hidden="true"></i>
+                Atención y soporte a usuarios finales con altos estándares de servicio al cliente.
+              </li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="tech-badge purple">Hardware</span>
+              <span class="tech-badge purple">Software Config</span>
+              <span class="tech-badge purple">User Support</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────
+         CONTACTO & FOOTER
+    ───────────────────────────────────────────────────────── -->
+    <section id="contacto" class="py-20 px-4 sm:px-6 lg:px-8" aria-labelledby="contacto-heading">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal mb-12 text-center">
+          <p class="section-label mb-2">¿Trabajamos juntos?</p>
+          <h2 id="contacto-heading" class="text-3xl sm:text-4xl font-black text-white">
+            Ponte en Contacto
+          </h2>
+          <p class="text-slate-400 mt-3 max-w-xl mx-auto">
+            Estoy disponible para roles de TI, proyectos de automatización y consultoría de sistemas.
+            ¡Hablemos!
+          </p>
+        </div>
+
+        <!-- Contact CTA card -->
+        <div class="reveal glass-card grad-border max-w-2xl mx-auto p-8 text-center">
+
+          <!-- Glow avatar -->
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500
+                      flex items-center justify-center text-3xl font-black text-black
+                      shadow-lg shadow-emerald-500/25 mx-auto mb-6" aria-hidden="true">
+            SV
+          </div>
+
+          <h3 class="text-xl font-bold text-white mb-1">Steven Patricio Venegas Rengifo</h3>
+          <p class="text-slate-400 text-sm mb-6">Systems Engineer | IT Operations, Automation &amp; Enterprise Systems</p>
+
+          <!-- Action buttons -->
+          <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+            <!-- Copy email button -->
+            <button
+              onclick="copyEmail()"
+              class="btn-secondary group text-sm justify-center"
+              aria-label="Copiar dirección de email al portapapeles">
+              <i data-lucide="mail" class="w-4 h-4 text-emerald-400 group-hover:text-emerald-300 transition-colors"></i>
+              <span class="truncate max-w-[220px]">stevenpatriciovenegasrengifo@gmail.com</span>
+              <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 transition-colors flex-shrink-0"></i>
+            </button>
+
+            <!-- WhatsApp button -->
+            <a href="https://wa.me/593999976899?text=Hola%20Steven%2C%20vi%20tu%20portfolio%20y%20me%20gustar%C3%ADa%20contactarte."
+               target="_blank" rel="noopener noreferrer"
+               class="btn-primary justify-center text-sm"
+               aria-label="Iniciar conversación por WhatsApp">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              WhatsApp +593 99 997 6899
+            </a>
+          </div>
+
+          <!-- Social Links -->
+          <div class="flex items-center justify-center gap-3">
+            <a href="https://github.com/Steve-p-Dev"
+               target="_blank" rel="noopener noreferrer"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10
+                      border border-white/10 hover:border-white/20 text-slate-400 hover:text-white
+                      text-sm font-medium transition-all duration-200"
+               aria-label="Visitar perfil de GitHub">
+              <i data-lucide="github" class="w-4 h-4"></i>
+              GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/stevenvenegasit"
+               target="_blank" rel="noopener noreferrer"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10
+                      border border-white/10 hover:border-white/20 text-slate-400 hover:text-white
+                      text-sm font-medium transition-all duration-200"
+               aria-label="Visitar perfil de LinkedIn">
+              <i data-lucide="linkedin" class="w-4 h-4"></i>
+              LinkedIn
+            </a>
+            <a href="https://wa.me/593999976899"
+               target="_blank" rel="noopener noreferrer"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10
+                      border border-white/10 hover:border-white/20 text-slate-400 hover:text-white
+                      text-sm font-medium transition-all duration-200"
+               aria-label="Contactar por WhatsApp">
+              <i data-lucide="phone" class="w-4 h-4"></i>
+              Teléfono
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════════ -->
+  <footer class="py-8 px-4 sm:px-6 lg:px-8 border-t border-white/5" role="contentinfo">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-600">
+      <span class="logo-text text-sm">SV<span>.</span>dev<span class="opacity-60">_</span></span>
+      <p>
+        &copy; <span id="year"></span> Steven Patricio Venegas Rengifo · Ecuador
+      </p>
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/Steve-p-Dev" target="_blank" rel="noopener noreferrer"
+           class="hover:text-emerald-400 transition-colors" aria-label="GitHub">
+          <i data-lucide="github" class="w-4 h-4"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/stevenvenegasit" target="_blank" rel="noopener noreferrer"
+           class="hover:text-emerald-400 transition-colors" aria-label="LinkedIn">
+          <i data-lucide="linkedin" class="w-4 h-4"></i>
+        </a>
+        <a href="mailto:stevenpatriciovenegasrengifo@gmail.com"
+           class="hover:text-emerald-400 transition-colors" aria-label="Email">
+          <i data-lucide="mail" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       JAVASCRIPT
+  ══════════════════════════════════════════════════════════════ -->
+  <script>
+    // ─── Init Lucide Icons ─────────────────────────────────────
+    lucide.createIcons();
+
+    // ─── Dynamic copyright year ───────────────────────────────
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ─── Cursor glow ──────────────────────────────────────────
+    const cursorGlow = document.getElementById('cursor-glow');
+    let mouseX = 0, mouseY = 0;
+    let glowX = 0, glowY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      glowX += (mouseX - glowX) * 0.08;
+      glowY += (mouseY - glowY) * 0.08;
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top  = glowY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hide glow when mouse leaves window
+    document.addEventListener('mouseleave', () => { cursorGlow.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { cursorGlow.style.opacity = '1'; });
+
+    // ─── Mobile menu ──────────────────────────────────────────
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon   = document.getElementById('menu-icon');
+    let menuOpen = false;
+
+    menuToggle.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open', menuOpen);
+      menuToggle.setAttribute('aria-expanded', menuOpen.toString());
+      // swap icon
+      menuIcon.setAttribute('data-lucide', menuOpen ? 'x' : 'menu');
+      lucide.createIcons();
+    });
+
+    function closeMobileMenu() {
+      menuOpen = false;
+      mobileMenu.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuIcon.setAttribute('data-lucide', 'menu');
+      lucide.createIcons();
+    }
+
+    // ─── Navbar scroll shadow ─────────────────────────────────
+    const navbar = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.style.boxShadow = '0 4px 32px rgba(0,0,0,0.4)';
+      } else {
+        navbar.style.boxShadow = 'none';
+      }
+    }, { passive: true });
+
+    // ─── Intersection Observer: reveal on scroll ──────────────
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // ─── Skill bar animation ───────────────────────────────────
+    const skillBars = document.querySelectorAll('.skill-bar-fill');
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bar  = entry.target;
+          const w    = parseFloat(bar.dataset.width || '0.75');
+          bar.style.transform = `scaleX(${w})`;
+          bar.classList.add('animate');
+          skillObserver.unobserve(bar);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    skillBars.forEach(bar => skillObserver.observe(bar));
+
+    // ─── Active nav link highlight ────────────────────────────
+    const sections  = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.nav-link');
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            const isActive = link.getAttribute('href') === `#${id}`;
+            link.classList.toggle('text-white',   isActive);
+            link.classList.toggle('text-slate-400', !isActive);
+            link.classList.toggle('bg-white/5',   isActive);
+          });
+        }
+      });
+    }, { threshold: 0.35 });
+
+    sections.forEach(s => sectionObserver.observe(s));
+
+    // ─── Toast notification ───────────────────────────────────
+    let toastTimer = null;
+
+    function showToast(msg = '¡Copiado al portapapeles!') {
+      const toast   = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ─── Copy email to clipboard ──────────────────────────────
+    function copyEmail() {
+      const email = 'stevenpatriciovenegasrengifo@gmail.com';
+      navigator.clipboard.writeText(email)
+        .then(() => showToast('¡Email copiado al portapapeles!'))
+        .catch(() => {
+          // Fallback for older browsers
+          const ta = document.createElement('textarea');
+          ta.value = email;
+          ta.style.position = 'fixed';
+          ta.style.opacity  = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast('¡Email copiado al portapapeles!');
+        });
+    }
+
+    // ─── Keyboard accessibility: close mobile menu on Escape ──
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menuOpen) closeMobileMenu();
+    });
+
+    // ─── Smooth anchor scroll (polyfill fallback) ─────────────
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        const targetId = anchor.getAttribute('href');
+        if (targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>
