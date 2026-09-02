@@ -415,7 +415,7 @@
       transform: translateY(-1px);
     }
 
-    /* ─── Easter Egg: Destroy / Restore ─────────────────── */
+    /* ─── Easter Egg: Destroy button ────────────────────── */
     .btn-danger {
       display: inline-flex;
       align-items: center;
@@ -435,85 +435,134 @@
       border-color: rgba(239,68,68,0.50);
       transform: translateY(-1px);
     }
-    .btn-restore {
-      display: none;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 18px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      background: rgba(16,185,129,0.12);
-      color: #10b981;
-      border: 1px solid rgba(16,185,129,0.35);
-      cursor: pointer;
-      transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease, box-shadow 0.3s ease;
-      animation: restore-pulse 1.5s ease-in-out infinite;
-    }
-    .btn-restore.visible {
-      display: inline-flex;
-    }
-    .btn-restore:hover {
-      background: rgba(16,185,129,0.22);
-      border-color: rgba(16,185,129,0.6);
-      transform: translateY(-1px);
-      box-shadow: 0 0 20px rgba(16,185,129,0.3);
-    }
-    @keyframes restore-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
-      50%       { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
-    }
 
     /* ─── Screen shake ───────────────────────────────────── */
     @keyframes screen-shake {
       0%,100% { transform: translate(0,0) rotate(0deg); }
-      10%  { transform: translate(-6px, -4px) rotate(-0.5deg); }
-      20%  { transform: translate(7px, 5px)  rotate(0.5deg); }
-      30%  { transform: translate(-5px, 3px) rotate(-0.3deg); }
-      40%  { transform: translate(6px, -5px) rotate(0.4deg); }
-      50%  { transform: translate(-7px, 4px) rotate(-0.5deg); }
-      60%  { transform: translate(5px, -3px) rotate(0.3deg); }
-      70%  { transform: translate(-4px, 5px) rotate(-0.4deg); }
-      80%  { transform: translate(6px, -4px) rotate(0.5deg); }
-      90%  { transform: translate(-3px, 3px) rotate(-0.2deg); }
+      8%   { transform: translate(-8px,-5px) rotate(-0.6deg); }
+      16%  { transform: translate(9px, 6px) rotate(0.6deg); }
+      24%  { transform: translate(-7px, 4px) rotate(-0.4deg); }
+      32%  { transform: translate(8px,-6px) rotate(0.5deg); }
+      40%  { transform: translate(-9px, 5px) rotate(-0.6deg); }
+      48%  { transform: translate(7px,-4px) rotate(0.4deg); }
+      56%  { transform: translate(-6px, 6px) rotate(-0.5deg); }
+      64%  { transform: translate(8px,-5px) rotate(0.5deg); }
+      72%  { transform: translate(-5px, 4px) rotate(-0.3deg); }
+      80%  { transform: translate(6px,-3px) rotate(0.4deg); }
+      90%  { transform: translate(-3px, 2px) rotate(-0.2deg); }
     }
-    body.shaking { animation: screen-shake 0.55s ease-in-out; }
+    body.shaking { animation: screen-shake 0.65s ease-in-out; }
+
+    /* ─── Crack overlay ───────────────────────────────────── */
+    #crack-overlay {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 8888;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    #crack-overlay.show { opacity: 1; }
 
     /* ─── Error banner ────────────────────────────────────── */
     #error-banner {
-      display: none;
+      pointer-events: none;
       position: fixed;
       top: 72px;
       left: 50%;
       transform: translateX(-50%) translateY(-20px);
-      background: rgba(239,68,68,0.12);
-      border: 1px solid rgba(239,68,68,0.40);
-      backdrop-filter: blur(12px);
+      background: rgba(239,68,68,0.14);
+      border: 1px solid rgba(239,68,68,0.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       color: #fca5a5;
-      padding: 11px 24px;
+      padding: 12px 28px;
       border-radius: 12px;
       font-weight: 700;
-      font-size: 0.85rem;
-      z-index: 9998;
+      font-size: 0.875rem;
+      z-index: 9990;
       white-space: nowrap;
       opacity: 0;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+      letter-spacing: 0.01em;
     }
     #error-banner.show {
-      display: block;
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ─── Falling element physics ────────────────────────── */
-    .falling {
-      transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity   0.7s ease 0.15s !important;
+    /* ─── Fixed Restore Button ───────────────────────────── */
+    #btn-restore-fixed {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: 14px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: linear-gradient(135deg, #10b981dd, #06b6d4dd);
+      color: #fff;
+      border: 1px solid rgba(16,185,129,0.5);
+      cursor: pointer;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 32px rgba(16,185,129,0.45), 0 2px 8px rgba(0,0,0,0.4);
+      transform: scale(0) translateY(20px);
+      opacity: 0;
+      transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1),
+                  opacity   0.3s ease,
+                  filter    0.2s ease,
+                  box-shadow 0.3s ease;
     }
-    .restoring {
-      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                  opacity   0.6s ease !important;
+    #btn-restore-fixed.popin {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+    #btn-restore-fixed:hover {
+      filter: brightness(1.15);
+      box-shadow: 0 12px 40px rgba(16,185,129,0.6), 0 2px 8px rgba(0,0,0,0.4);
+    }
+    @keyframes restore-btn-pulse {
+      0%,100% { box-shadow: 0 8px 32px rgba(16,185,129,0.45), 0 2px 8px rgba(0,0,0,0.4); }
+      50%     { box-shadow: 0 8px 48px rgba(16,185,129,0.70), 0 2px 8px rgba(0,0,0,0.4); }
+    }
+    #btn-restore-fixed.popin {
+      animation: restore-btn-pulse 2s ease-in-out infinite;
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    /* ─── Debris fragments ───────────────────────────────── */
+    .debris-fragment {
+      position: fixed;
+      pointer-events: none;
+      z-index: 8500;
+      border-radius: 2px;
+      background: linear-gradient(135deg,
+        rgba(16,185,129,0.55) 0%,
+        rgba(6,182,212,0.40) 40%,
+        rgba(255,255,255,0.20) 70%,
+        rgba(16,185,129,0.15) 100%);
+      border: 1px solid rgba(16,185,129,0.35);
+      box-shadow: 0 0 6px rgba(16,185,129,0.4), inset 0 0 4px rgba(255,255,255,0.08);
+      opacity: 0;
+      transform-origin: center center;
+      /* will-change keeps GPU layer alive during animation */
+      will-change: transform, opacity;
+    }
+    .debris-fragment.land {
+      opacity: 0.72;
+    }
+
+    /* ─── Shattered element style during fall ────────────── */
+    .shattering {
+      pointer-events: none !important;
+      will-change: transform, opacity;
     }
   </style>
 </head>
@@ -531,8 +580,56 @@
 
   <!-- ─── Error Banner (Easter Egg) ───────────────────────────── -->
   <div id="error-banner" role="alert" aria-live="assertive">
-    ⚠️&nbsp; ERROR CRÍTICO DE SISTEMA: Interfaz colapsada
+    ⚠️&nbsp; ERROR CRÍTICO: Interfaz colapsada
   </div>
+
+  <!-- ─── Crack Overlay SVG (Easter Egg) ──────────────────────── -->
+  <svg id="crack-overlay" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Main crack lines radiating from 3 impact points -->
+    <!-- Impact 1: upper-left area -->
+    <g stroke="rgba(255,255,255,0.55)" stroke-linecap="round" fill="none">
+      <line x1="320" y1="200" x2="0"    y2="80"   stroke-width="1.5"/>
+      <line x1="320" y1="200" x2="80"   y2="0"    stroke-width="1.2"/>
+      <line x1="320" y1="200" x2="180"  y2="420"  stroke-width="1.0"/>
+      <line x1="320" y1="200" x2="500"  y2="350"  stroke-width="0.9"/>
+      <line x1="320" y1="200" x2="620"  y2="80"   stroke-width="0.8"/>
+      <!-- micro cracks -->
+      <line x1="320" y1="200" x2="260"  y2="310"  stroke-width="0.6" stroke="rgba(255,255,255,0.30)"/>
+      <line x1="320" y1="200" x2="390"  y2="260"  stroke-width="0.5" stroke="rgba(255,255,255,0.25)"/>
+    </g>
+    <!-- Impact 2: center -->
+    <g stroke="rgba(255,255,255,0.50)" stroke-linecap="round" fill="none">
+      <line x1="740" y1="430" x2="1440" y2="200"  stroke-width="1.6"/>
+      <line x1="740" y1="430" x2="1200" y2="900"  stroke-width="1.3"/>
+      <line x1="740" y1="430" x2="400"  y2="900"  stroke-width="1.1"/>
+      <line x1="740" y1="430" x2="0"    y2="650"  stroke-width="0.9"/>
+      <line x1="740" y1="430" x2="900"  y2="50"   stroke-width="0.8"/>
+      <line x1="740" y1="430" x2="560"  y2="200"  stroke-width="0.7"/>
+      <line x1="740" y1="430" x2="1050" y2="600"  stroke-width="0.6" stroke="rgba(255,255,255,0.28)"/>
+    </g>
+    <!-- Impact 3: lower-right -->
+    <g stroke="rgba(255,255,255,0.45)" stroke-linecap="round" fill="none">
+      <line x1="1180" y1="720" x2="1440" y2="900"  stroke-width="1.4"/>
+      <line x1="1180" y1="720" x2="1440" y2="500"  stroke-width="1.1"/>
+      <line x1="1180" y1="720" x2="900"  y2="900"  stroke-width="1.0"/>
+      <line x1="1180" y1="720" x2="800"  y2="550"  stroke-width="0.8"/>
+      <line x1="1180" y1="720" x2="1100" y2="400"  stroke-width="0.7"/>
+    </g>
+    <!-- Shatter polygon fills (glass panels) -->
+    <polygon points="320,200 0,80 80,0"           fill="rgba(255,255,255,0.04)"/>
+    <polygon points="320,200 500,350 620,80"       fill="rgba(16,185,129,0.04)"/>
+    <polygon points="740,430 1440,200 900,50"      fill="rgba(6,182,212,0.03)"/>
+    <polygon points="740,430 400,900 0,650"        fill="rgba(255,255,255,0.03)"/>
+    <polygon points="1180,720 1440,900 1440,500"   fill="rgba(16,185,129,0.04)"/>
+  </svg>
+
+  <!-- ─── Fixed Restore Button (Easter Egg) ───────────────────── -->
+  <button id="btn-restore-fixed"
+          onclick="restorePortfolio()"
+          aria-label="Restaurar portafolio al estado original">
+    🔄 Restaurar Portafolio
+  </button>
 
   <!-- ══════════════════════════════════════════════════════════════
        NAVBAR
@@ -726,13 +823,6 @@
             class="btn-danger"
             aria-label="Easter egg: destruir portafolio">
             💥 Destruir Portafolio
-          </button>
-          <button
-            id="btn-restore"
-            onclick="restorePortfolio()"
-            class="btn-restore"
-            aria-label="Restaurar portafolio">
-            🔄 Restaurar Sistema
           </button>
         </div>
 
@@ -1560,23 +1650,27 @@
     });
 
     // ══════════════════════════════════════════════════════════
-    // EASTER EGG — Destroy & Restore Portfolio
+    // EASTER EGG v2 — Shatter & Restore Portfolio
+    // Physics: crack overlay + debris fragments + gravity fall
+    // Restore: window.location.reload() for 100% clean state
     // ══════════════════════════════════════════════════════════
 
-    // Selectors for elements that will "fall"
-    const FALL_SELECTORS = [
+    let eggDestroyed = false;
+    let debrisNodes  = [];   // tracks generated debris so we can clean up
+
+    // ── Selectors: every meaningful DOM region to shatter ────
+    const SHATTER_SELECTORS = [
       'header',
       '#inicio .avatar-wrapper',
       '#inicio h1',
-      '#inicio p',
+      '#inicio > div > p',
       '#inicio .btn-primary',
       '#inicio .btn-secondary',
       '#inicio .btn-icon',
-      '#inicio .btn-danger',
       '#inicio #easter-egg-row',
+      '#inicio .mt-12',          // stats strip
       '#stack .glass-card',
-      '#stack h2',
-      '#stack p.section-label',
+      '#stack h2, #stack p.section-label',
       '#proyectos .glass-card',
       '#proyectos h2',
       '#experiencia .glass-card',
@@ -1586,119 +1680,166 @@
       'footer',
     ];
 
-    // Store original inline styles so we can fully restore them
-    let savedStates = [];
-    let destroyed   = false;
+    // ── Debris fragment shapes (clip-path polygons for glass effect) ──
+    const CLIP_SHAPES = [
+      'polygon(0% 20%, 60% 0%, 100% 50%, 80% 100%, 10% 90%)',
+      'polygon(20% 0%, 100% 15%, 85% 85%, 0% 100%)',
+      'polygon(50% 0%, 100% 40%, 70% 100%, 0% 80%, 10% 20%)',
+      'polygon(0% 0%, 75% 10%, 100% 60%, 60% 100%, 5% 80%)',
+      'polygon(30% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 50%)',
+      'polygon(10% 10%, 90% 0%, 100% 80%, 40% 100%, 0% 60%)',
+      'polygon(0% 30%, 70% 0%, 100% 100%, 20% 100%)',
+      'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+      'polygon(0% 0%, 100% 20%, 80% 100%, 0% 75%)',
+      'polygon(25% 0%, 100% 0%, 100% 75%, 0% 100%)',
+    ];
 
+    // ── Spawn glass debris across the bottom of the screen ───
+    function spawnDebris(count) {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      for (let i = 0; i < count; i++) {
+        const el       = document.createElement('div');
+        el.className   = 'debris-fragment';
+
+        // Size: small shards ranging 12–55 px
+        const size     = 12 + Math.random() * 43;
+        el.style.width  = size + 'px';
+        el.style.height = (size * (0.5 + Math.random() * 0.8)) + 'px';
+
+        // Start position: scattered across full viewport
+        const startX   = Math.random() * vw;
+        const startY   = Math.random() * vh * 0.85;
+        el.style.left  = startX + 'px';
+        el.style.top   = startY + 'px';
+
+        // Glass polygon shape
+        el.style.clipPath = CLIP_SHAPES[Math.floor(Math.random() * CLIP_SHAPES.length)];
+
+        // Random color tint variation
+        const hue   = Math.random() > 0.5 ? '160' : '188'; // emerald or cyan
+        const alpha = (0.35 + Math.random() * 0.45).toFixed(2);
+        el.style.background = `linear-gradient(${Math.random()*360}deg,
+          hsla(${hue},70%,55%,${alpha}) 0%,
+          rgba(255,255,255,0.18) 50%,
+          hsla(${hue},60%,40%,0.15) 100%)`;
+        el.style.border = `1px solid hsla(${hue},70%,70%,0.35)`;
+        el.style.boxShadow = `0 0 ${4+Math.random()*8}px hsla(${hue},70%,55%,0.50),
+                               inset 0 1px 2px rgba(255,255,255,0.12)`;
+
+        // Starting transform: spread out from center with velocity
+        const angle    = Math.random() * 360;
+        const distance = 80 + Math.random() * 180;
+        const initRotate = (Math.random() - 0.5) * 120;
+        el.style.transform = `translate(0,0) rotate(${initRotate}deg)`;
+        el.style.opacity   = '0';
+
+        document.body.appendChild(el);
+        debrisNodes.push(el);
+
+        // ── Phase 1: appear and fly outward (burst) ────────
+        const delay = Math.random() * 0.18;
+        const burstX = Math.cos((angle * Math.PI) / 180) * distance;
+        const burstY = Math.sin((angle * Math.PI) / 180) * distance - 60;
+
+        setTimeout(() => {
+          el.style.transition = `transform 0.45s cubic-bezier(0.2,0.8,0.4,1) ${delay}s,
+                                  opacity   0.25s ease ${delay}s`;
+          el.style.opacity   = '0.9';
+          el.style.transform = `translate(${burstX}px, ${burstY}px) rotate(${initRotate + (Math.random()-0.5)*60}deg)`;
+        }, 10);
+
+        // ── Phase 2: gravity — fall to bottom edge ─────────
+        const landX    = startX + burstX + (Math.random() - 0.5) * 120;
+        const landY    = vh - size - (Math.random() * 40);            // rest near bottom
+        const finalRot = (Math.random() - 0.5) * 180;
+        const fallDur  = 0.55 + Math.random() * 0.5;
+        const fallDel  = delay + 0.38;
+
+        setTimeout(() => {
+          el.style.transition = `transform ${fallDur}s cubic-bezier(0.25,0.46,0.45,0.94) ${fallDel}s,
+                                  opacity   0.4s ease ${fallDel + fallDur - 0.15}s`;
+          el.style.transform  = `translate(${landX - startX}px, ${landY - startY}px) rotate(${finalRot}deg)`;
+          el.style.opacity    = (0.45 + Math.random() * 0.35).toFixed(2);
+          el.classList.add('land');
+        }, 10);
+      }
+    }
+
+    // ── Main destroy function ─────────────────────────────────
     function destroyPortfolio() {
-      if (destroyed) return;
-      destroyed = true;
+      if (eggDestroyed) return;
+      eggDestroyed = true;
 
-      const btnDestroy  = document.getElementById('btn-destroy');
-      const btnRestore  = document.getElementById('btn-restore');
-      const errorBanner = document.getElementById('error-banner');
+      const btnDestroy     = document.getElementById('btn-destroy');
+      const btnRestoreFixed = document.getElementById('btn-restore-fixed');
+      const errorBanner    = document.getElementById('error-banner');
+      const crackOverlay   = document.getElementById('crack-overlay');
 
-      // 1 ── Collect elements
-      const elements = [];
-      FALL_SELECTORS.forEach(sel => {
-        document.querySelectorAll(sel).forEach(el => {
-          if (!elements.includes(el)) elements.push(el);
-        });
+      // 1 ── Collect shatter targets
+      const targets = [];
+      SHATTER_SELECTORS.forEach(sel => {
+        try {
+          document.querySelectorAll(sel).forEach(el => {
+            if (!targets.includes(el)) targets.push(el);
+          });
+        } catch(_) {}
       });
 
-      // 2 ── Save original style so restore is pixel-perfect
-      savedStates = elements.map(el => ({
-        el,
-        position:  el.style.position  || '',
-        left:      el.style.left      || '',
-        top:       el.style.top       || '',
-        transform: el.style.transform || '',
-        opacity:   el.style.opacity   || '',
-        zIndex:    el.style.zIndex    || '',
-        transition:el.style.transition|| '',
-        pointerEvents: el.style.pointerEvents || '',
-      }));
-
-      // 3 ── Trigger screen shake
+      // 2 ── Screen shake
       document.body.classList.add('shaking');
       document.body.addEventListener('animationend', () => {
         document.body.classList.remove('shaking');
       }, { once: true });
 
-      // 4 ── After shake settles, launch physics fall
+      // 3 ── Crack overlay flash on shake start
+      crackOverlay.classList.add('show');
+
+      // 4 ── After shake: launch shard falls
       setTimeout(() => {
-        elements.forEach(el => {
-          const rect  = el.getBoundingClientRect();
-          const bodyH = document.body.scrollHeight;
 
-          // Distance to fall: from current position to well below the page
-          const fallY = bodyH - rect.top + 120 + Math.random() * 200;
+        // Apply fall to each target element
+        targets.forEach((el, idx) => {
+          const rect   = el.getBoundingClientRect();
+          const vh     = window.innerHeight;
 
-          // Random horizontal drift and spin
-          const driftX = (Math.random() - 0.5) * 420;
-          const rotate = (Math.random() - 0.5) * 65;
-          const delay  = Math.random() * 0.22; // stagger
+          // How far to fall: rest at the viewport bottom
+          const fallY  = vh - rect.top - rect.height * 0.5 + 30 + Math.random() * 60;
+          const driftX = (Math.random() - 0.5) * 500;
+          const spin   = (Math.random() - 0.5) * 75;
+          const delay  = idx * 0.018 + Math.random() * 0.12;
+          const dur    = 0.65 + Math.random() * 0.5;
 
-          // Pin element in place using absolute positioning anchored to its current spot
-          el.style.position   = 'relative';
-          el.style.zIndex     = '1';
-          el.style.pointerEvents = 'none';
-
-          // Apply fall transition + transform
-          el.style.transition = `transform ${0.75 + Math.random() * 0.4}s cubic-bezier(0.25,0.46,0.45,0.94) ${delay}s,
-                                  opacity   0.6s ease ${delay + 0.1}s`;
-          el.style.transform  = `translateY(${fallY}px) translateX(${driftX}px) rotate(${rotate}deg)`;
-          el.style.opacity    = '0';
+          el.classList.add('shattering');
+          el.style.transition = `transform ${dur}s cubic-bezier(0.25,0.46,0.45,0.94) ${delay}s,
+                                  opacity   ${dur * 0.85}s ease ${delay + 0.12}s`;
+          el.style.transform  = `translateY(${fallY}px) translateX(${driftX}px) rotate(${spin}deg)`;
+          el.style.opacity    = '0.08';
         });
 
-        // 5 ── Show error banner
-        errorBanner.style.display = 'block';
-        // Force reflow so transition fires
-        errorBanner.getBoundingClientRect();
+        // 5 ── Spawn glass debris (60 pieces)
+        spawnDebris(60);
+
+        // 6 ── Error banner
+        errorBanner.getBoundingClientRect(); // force reflow
         errorBanner.classList.add('show');
 
-        // 6 ── Swap buttons
-        btnDestroy.style.display = 'none';
-        btnRestore.classList.add('visible');
+        // 7 ── Hide destroy button
+        btnDestroy.style.opacity    = '0';
+        btnDestroy.style.pointerEvents = 'none';
 
-      }, 320); // wait for shake to finish
+        // 8 ── Pop-in the fixed restore button
+        setTimeout(() => {
+          btnRestoreFixed.classList.add('popin');
+        }, 400);
+
+      }, 350);
     }
 
+    // ── Restore: full page reload for 100% clean state ───────
     function restorePortfolio() {
-      if (!destroyed) return;
-
-      const btnDestroy  = document.getElementById('btn-destroy');
-      const btnRestore  = document.getElementById('btn-restore');
-      const errorBanner = document.getElementById('error-banner');
-
-      // 1 ── Hide error banner
-      errorBanner.classList.remove('show');
-      setTimeout(() => { errorBanner.style.display = 'none'; }, 450);
-
-      // 2 ── Restore all elements with springy transition
-      savedStates.forEach(({ el, position, left, top, transform, opacity, zIndex, transition, pointerEvents }) => {
-        el.style.transition    = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s ease';
-        el.style.transform     = transform;
-        el.style.opacity       = opacity || '1';
-        el.style.pointerEvents = pointerEvents;
-
-        // After restore animation, fully revert to original styles
-        setTimeout(() => {
-          el.style.position   = position;
-          el.style.left       = left;
-          el.style.top        = top;
-          el.style.zIndex     = zIndex;
-          el.style.transition = transition;
-        }, 750);
-      });
-
-      // 3 ── Swap buttons back after a short delay
-      setTimeout(() => {
-        btnRestore.classList.remove('visible');
-        btnDestroy.style.display = '';
-        destroyed = false;
-        savedStates = [];
-      }, 800);
+      window.location.reload();
     }
 
   </script>
